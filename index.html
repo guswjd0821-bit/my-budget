@@ -1,1 +1,39 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>나만의 가계부</title>
+</head>
+<body>
+  <h1>이번 달 예산</h1>
 
+  <p><label for="budget">이번 달 예산(원)</label>
+    <input id="budget" type="number" min="0" step="1"></p>
+
+  <p><label for="spent">지금까지 쓴 돈(원)</label>
+    <input id="spent" type="number" min="0" step="1"></p>
+
+  <button id="calculate">남은 예산 계산</button>
+  <p id="result" aria-live="polite"></p>
+
+  <script>
+    const budget = document.querySelector("#budget");
+    const spent = document.querySelector("#spent");
+    const result = document.querySelector("#result");
+
+    document.querySelector("#calculate").addEventListener("click", () => {
+      if (!budget.value || !spent.value || !budget.validity.valid || !spent.validity.valid) {
+        result.textContent = "두 칸에 0원 이상의 정수를 입력해 줘.";
+        return;
+      }
+
+      const remaining = budget.valueAsNumber - spent.valueAsNumber;
+      const amount = Math.abs(remaining).toLocaleString("ko-KR");
+      result.textContent = remaining < 0
+        ? `예산보다 ${amount}원 더 썼어.`
+        : `남은 예산은 ${amount}원이야.`;
+    });
+  </script>
+</body>
+</html>
